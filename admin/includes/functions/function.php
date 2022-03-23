@@ -46,8 +46,14 @@ function checkItem($select, $from, $value)
     $count = $statment->rowCount();
 
     return $count;
+}
+// to count number of items for dashboaed
+function countsItems($item, $table)
+{
+    global $con;
 
-    // if($count>1){
+    $stmt2 = $con->prepare("SELECT COUNT($item) FROM $table");
+    $stmt2->execute();
 
-    // }
+    return $stmt2->fetchColumn();
 }
