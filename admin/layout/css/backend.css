@@ -95,6 +95,12 @@ body {
   margin-top: 30px;
   /* background-color: #666; */
 }
+.panel {
+  border: 1px solid rgb(138, 134, 134);
+}
+.panel-heading {
+  background-color: #ccc;
+}
 /* end dashboard */
 /* start member */
 h1 {
