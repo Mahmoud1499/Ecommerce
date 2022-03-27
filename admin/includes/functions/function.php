@@ -47,6 +47,7 @@ function checkItem($select, $from, $value)
 
     return $count;
 }
+
 // to count number of items for dashboaed
 function countsItems($item, $table)
 {
@@ -56,4 +57,15 @@ function countsItems($item, $table)
     $stmt2->execute();
 
     return $stmt2->fetchColumn();
+}
+
+// to get latest records function
+
+function getLatest($select, $table,   $order, $limit = 5)
+{
+    global $con;
+    $getStmt = $con->prepare("SELECT $select FROM $table ORDER BY $order desc LIMIT $limit");
+    $getStmt->execute();
+    $rows = $getStmt->fetchAll();
+    return $rows;
 }

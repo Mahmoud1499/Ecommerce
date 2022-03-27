@@ -15,26 +15,26 @@ if (isset($_SESSION['username'])) {
         <h1>Dashboard</h1>
         <div class="row">
 
-            <div class="col-md-3">
-                <div class="stat"> Total Members
+            <div class="col-md-3 ">
+                <div class="stat st-members"> Total Members
+                    <span> <a href="members.php"> <?= countsItems('UserID', 'users'); ?> </a> </span>
+                </div>
+            </div>
+
+            <div class="col-md-3 ">
+                <div class="stat st-pending">Pending Members
+                    <span><a href="members.php?do=Manage&page=Pending"> <?= checkItem('RegStatus', 'users', 0); ?></a></span>
+                </div>
+            </div>
+
+            <div class="col-md-3 ">
+                <div class="stat st-items"> Total Items
                     <span><?= countsItems('UserID', 'users'); ?></span>
                 </div>
             </div>
 
-            <div class="col-md-3">
-                <div class="stat">Pending Members
-                    <span><?= countsItems('UserID', 'users'); ?></span>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="stat"> Total Items
-                    <span><?= countsItems('UserID', 'users'); ?></span>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="stat"> Total Comments
+            <div class="col-md-3 ">
+                <div class="stat st-comments"> Total Comments
                     <span><?= countsItems('UserID', 'users'); ?></span>
                 </div>
             </div>
@@ -46,11 +46,29 @@ if (isset($_SESSION['username'])) {
         <div class="row">
             <div class="col-sm-6">
                 <div class="panel panel-default">
+                    <?php $latestUser = 5 ?>
                     <div class="panel-heading">
-                        <i class="fa fa-users"></i> Latest Registerd Users
+                        <i class="fa fa-users"></i> Latest <?= $latestUser ?> Registerd Users
                     </div>
                     <div class="panel-body">
-                        Test
+                        <ul class="list-unstyled latest-users ">
+                            <?php
+                            $theLatest = getLatest("*", 'users', 'UserID', $latestUser);
+                            foreach ($theLatest as $user) {
+                                echo '<li>';
+                                echo $user['UserName'];
+                                echo '<a href="members.php?do=Edit&userid=' . $user['UserID'] . '">';
+                                echo '<span class="btn btn-success pull-right">';
+                                echo '<i class="fa fa-edit"></i> Edit';
+                                if ($user['RegStatus'] == 0) {
+                                    echo    "<a class='btn btn-info pull-right activate' href='members.php?do=Activate&userid=" . $user['UserID'] . "'>  <i class='fa fa-close ' > Activate </i> </a>";
+                                }
+                                echo '</span>';
+                                echo '</a>';
+                                echo '</li>';
+                            }
+                            ?>
+                        </ul>
                     </div>
                 </div>
             </div>
