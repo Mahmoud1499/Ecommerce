@@ -1,4 +1,5 @@
 <?php
+ob_start();
 /// Manage member page 
 session_start();
 
@@ -394,3 +395,4 @@ if (isset($_SESSION['username'])) {
     header('location: index.php');
     exit();
 }
+ob_end_flush();

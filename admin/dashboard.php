@@ -1,4 +1,6 @@
 <?php
+ob_start();
+
 session_start();
 // $nonavbar = '';
 
@@ -96,3 +98,4 @@ if (isset($_SESSION['username'])) {
     header('location: index.php');
     exit();
 }
+ob_end_flush();

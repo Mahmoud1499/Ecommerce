@@ -10,7 +10,7 @@
                 <a class="nav-link" href="dashboard.php"><?= lang('HOME PAGE') ?> <span class="sr-only"></span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#"><?= lang('CATEGORIES') ?></a>
+                <a class="nav-link" href="categories.php"><?= lang('CATEGORIES') ?></a>
             <li class="nav-item">
                 <a class="nav-link" href="#"><?= lang('ITEMS') ?></a>
             </li>
