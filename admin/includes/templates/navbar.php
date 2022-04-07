@@ -12,7 +12,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="categories.php"><?= lang('CATEGORIES') ?></a>
             <li class="nav-item">
-                <a class="nav-link" href="#"><?= lang('ITEMS') ?></a>
+                <a class="nav-link" href="items.php"><?= lang('ITEMS') ?></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="members.php"><?= lang('MEMBERS') ?></a>
