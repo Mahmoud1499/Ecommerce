@@ -90,8 +90,8 @@ if (isset($_SESSION['username'])) {
 
         <div class="container">
             <form class="form-horizontal" action="?do=Insert" method="POST">
-                <div class="form-group form-group-lg"">
-<label class=" col-sm-2 col-md-6 control-label" for="name"> Name </label>
+                <div class="form-group form-group-lg">
+                    <label class=" col-sm-2 col-md-6 control-label" for="name"> Name </label>
                     <div class="col-sm-10">
                         <input class="form-control" type="text" name="name" autocomplete="off" required="required" placeholder="Name of Category">
                     </div>
@@ -105,15 +105,15 @@ if (isset($_SESSION['username'])) {
                     </div>
                 </div>
 
-                <div class="form-group form-group-lg"">
-<label class=" col-sm-2 col-md-6 control-label" for="ordering"> ordering </label>
+                <div class="form-group form-group-lg">
+                    <label class=" col-sm-2 col-md-6 control-label" for="ordering"> ordering </label>
                     <div class="col-sm-10">
                         <input class="form-control" type="text" name="ordering" " placeholder=" Number to arrange the category">
                     </div>
                 </div>
 
-                <div class="form-group form-group-lg"">
-<label class=" col-sm-2 control-label" for="Visable"> Visable </label>
+                <div class="form-group form-group-lg">
+                    <label class=" col-sm-2 control-label" for="Visable"> Visable </label>
                     <div class="col-sm-10">
                         <div>
                             <input id="visable-yes" type="radio" name="visability" value="0" checked />
@@ -126,8 +126,8 @@ if (isset($_SESSION['username'])) {
                     </div>
                 </div>
 
-                <div class="form-group form-group-lg"">
-<label class=" col-sm-2 control-label" for="commenting"> Allow commenting </label>
+                <div class="form-group form-group-lg">
+                    <label class=" col-sm-2 control-label" for="commenting"> Allow commenting </label>
                     <div class="col-sm-10">
                         <div>
                             <input id="comment-yes" type="radio" name="commenting" value="0" checked />
@@ -140,8 +140,8 @@ if (isset($_SESSION['username'])) {
                     </div>
                 </div>
 
-                <div class="form-group form-group-lg"">
-<label class=" col-sm-2 control-label" for="ads"> Allow Ads </label>
+                <div class="form-group form-group-lg">
+                    <label class=" col-sm-2 control-label" for="ads"> Allow Ads </label>
                     <div class="col-sm-10">
                         <div>
                             <input id="Ads-yes" type="radio" name="ads" value="0" checked />
@@ -154,12 +154,12 @@ if (isset($_SESSION['username'])) {
                     </div>
                 </div>
 
-                <div class="form-group form-group-lg"">
-<div class=" col-sm-offset-2 col-sm-10">
-                    <input class="btn btn-primary btn-lg " type="submit" value="Add Category">
+                <div class="form-group form-group-lg">
+                    <div class=" col-sm-offset-2 col-sm-10">
+                        <input class="btn btn-primary btn-lg " type="submit" value="Add Category">
+                    </div>
                 </div>
-        </div>
-        </form>
+            </form>
         </div>
         <?php
     } elseif ($do == 'Insert') {

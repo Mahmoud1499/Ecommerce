@@ -90,26 +90,26 @@ if (isset($_SESSION['username'])) {
                     </div>
                 </div>
 
-                <div class="form-group form-group-lg"">
-        <label class=" col-sm-2 col-md-6 control-label" for="Email"> Email </label>
+                <div class="form-group form-group-lg">
+                    <label class=" col-sm-2 col-md-6 control-label" for="Email"> Email </label>
                     <div class="col-sm-10">
                         <input class="form-control" type="email" name="Email" " required=" required" placeholder="Email Must Be Valid">
                     </div>
                 </div>
 
-                <div class="form-group form-group-lg"">
-        <label class=" col-sm-2 col-md-6 control-label" for="Fullname"> Full-Name </label>
+                <div class="form-group form-group-lg">
+                    <label class=" col-sm-2 col-md-6 control-label" for="Fullname"> Full-Name </label>
                     <div class="col-sm-10">
                         <input class="form-control" type="text" name="Fullname" " required=" required" placeholder="Full Name Appear In your Profile Page">
                     </div>
                 </div>
 
-                <div class="form-group form-group-lg"">
-        <div class=" col-sm-offset-2 col-sm-10">
-                    <input class="btn btn-primary btn-lg " type="submit" value="Add Member">
+                <div class="form-group form-group-lg">
+                    <div class=" col-sm-offset-2 col-sm-10">
+                        <input class="btn btn-primary btn-lg " type="submit" value="Add Member">
+                    </div>
                 </div>
-        </div>
-        </form>
+            </form>
         </div>
         <?php
     } elseif ($do == 'Insert') {
@@ -171,7 +171,7 @@ if (isset($_SESSION['username'])) {
 
                     $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . '  ONE RECOED INSERTED </div>';
 
-                    redirectHome("$theMsg", 'back', 3);
+                    redirectHome("$theMsg");
                 }
                 //insert user in db
             }

@@ -1,5 +1,11 @@
 $(function(){
     'user strict';
+
+  // Calls the selectBoxIt method on your HTML select box and uses the default theme
+  $("select").selectBoxIt({
+      autoWidth:false,
+  });
+
     // hide placeholder in focus
 
     $('[placeholder]').focus(function(){

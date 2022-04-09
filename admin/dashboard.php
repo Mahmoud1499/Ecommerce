@@ -31,7 +31,7 @@ if (isset($_SESSION['username'])) {
 
             <div class="col-md-3 ">
                 <div class="stat st-items"> Total Items
-                    <span><?= countsItems('UserID', 'users'); ?></span>
+                    <span> <a href="items.php"> <?= countsItems('Item_ID', 'items'); ?> </a> </span>
                 </div>
             </div>
 
