@@ -18,6 +18,9 @@
                 <a class="nav-link" href="members.php"><?= lang('MEMBERS') ?></a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="comments.php"><?= lang('COMMENTS') ?></a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="#"><?= lang('STATISTICS') ?></a>
             </li>
             <li class="nav-item">

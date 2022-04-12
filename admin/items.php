@@ -51,7 +51,9 @@ if (isset($_SESSION['username'])) {
                         echo "<td>" . $item['Add_Date'] . "</td>";
                         echo " <td> <a class='btn btn-success' href='items.php?do=Edit&itemid=" . $item['Item_ID'] . "'> <i class='fa fa-edit ' > Edit </i> </a>
                                        <a class='btn btn-danger confirm' href='items.php?do=Delete&itemid=" . $item['Item_ID'] . "'>  <i class='fa fa-close ' > Delete </i> </a>";
-
+                        if ($item['Approve'] == 0) {
+                            echo    "<a class='btn btn-info activate' href='items.php?do=Approve&itemid=" . $item['Item_ID'] . "'>  <i class='fa fa-check ' > Approve </i> </a>";
+                        }
                         echo    "</td>";
 
                         echo "</tr>";
@@ -338,6 +340,55 @@ if (isset($_SESSION['username'])) {
                                     </div>
                                 </div>
                 </form>
+                <?php
+                $stmt = $con->prepare("SELECT comments.*  , users.UserName
+                FROM comments
+                INNER JOIN users on users.UserID = comments.user_id
+                WHERE item_id = ?
+                ");
+                $stmt->execute(array($itemid));
+                $rows = $stmt->fetchAll();
+                // var_dump($rows);
+                if (!empty($rows)) {
+
+                ?>
+
+                    <h1 class="text-center">Mange <?= $item['Name'] ?> Comments</h1>
+
+                    <div class="table-responsive">
+                        <table class="main-table text-center table table-bordered">
+                            <tr>
+
+                                <td>Comment</td>
+                                <td>User Name</td>
+                                <td>Added Date</td>
+                                <td>Control</td>
+                            </tr>
+                            <?php
+                            foreach ($rows as $row) {
+                                echo "<tr>";
+
+                                echo "<td>" . $row['comment'] . "</td>";
+                                echo "<td>" . $row['UserName'] . "</td>";
+                                echo "<td>" . $row['comment_date'] . "</td>";
+                                echo " <td> <a class='btn btn-success' href='comments.php?do=Edit&comid=" . $row['c_id'] . "'> <i class='fa fa-edit ' > Edit </i> </a>
+                                     <a class='btn btn-danger confirm' href='comments.php?do=Delete&comid=" . $row['c_id'] . "'>  <i class='fa fa-close ' > Delete </i> </a>";
+                                if ($row['status'] == 0) {
+                                    echo    "<a class='btn btn-info activate' href='comments.php?do=Approve&comid=" . $row['c_id'] . "'>  <i class='fa fa-check ' > Approve </i> </a>";
+                                }
+                                echo    "</td>";
+
+                                echo "</tr>";
+                            }
+
+                            ?>
+
+                        </table>
+                    </div>
+
+                <?php    } ?>
+
+
             </div>
 
 <?php
@@ -411,7 +462,75 @@ if (isset($_SESSION['username'])) {
         }
         echo "</div>";
     } elseif ($do == "Delete") {
+        //delete item page 
+        echo '<h1 class="text-center">Delete Item</h1>';
+        echo '<div class="container">';
+        // echo "welcome to delet page ";
+        if (isset($_GET['itemid']) && is_numeric($_GET['itemid'])) {
+            $itemid = intval($_GET['itemid']);
+        } else {
+            $itemid = 0;
+        }
+        //check if user exist in db
+        // $stmt = $con->prepare("SELECT * From users WHERE itemid = ? LIMIT 1;");
+        $check = checkItem("Item_ID", "items", "$itemid");
+        // echo $check;
+
+        // $stmt->execute(array($itemid));
+        // $row = $stmt->fetch();
+        // var_dump($row);
+        // $count = $stmt->rowCount();
+        // var_dump($row);
+        if ($check > 0) {
+            // echo 'esixt';
+            $stmt = $con->prepare("DELETE  From items WHERE Item_ID = ? LIMIT 1;");
+            $stmt->execute(array($itemid));
+            echo '<div class="container">';
+            $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . 'Record Deleted</div>';
+            redirectHome($theMsg, 'back');
+            echo '</div>';
+        } else {
+            echo '<div class="container">';
+            $theMsg = "<div class='alert alert-danger'>there is no ID  like this exist </div>";
+            redirectHome($theMsg);
+            echo '</div>';
+        }
+        echo '</div>';
     } elseif ($do == "Approve") {
+        //Approve page
+        echo '<h1 class="text-center">Approve Member</h1>';
+        echo '<div class="container">';
+        // echo "welcome to Approve page ";
+        if (isset($_GET['itemid']) && is_numeric($_GET['itemid'])) {
+            $itemid = intval($_GET['itemid']);
+        } else {
+            $itemid = 0;
+        }
+        //check if user exist in db
+        // $stmt = $con->prepare("SELECT * From users WHERE itemid = ? LIMIT 1;");
+        $check = checkItem("Item_ID", "items", "$itemid");
+        // echo $check;
+
+        // $stmt->execute(array($itemid));
+        // $row = $stmt->fetch();
+        // var_dump($row);
+        // $count = $stmt->rowCount();
+        // var_dump($row);
+        if ($check > 0) {
+            // echo 'esixt';
+            $stmt = $con->prepare("UPDATE items SET Approve =1 WHERE Item_ID = ?;");
+            $stmt->execute(array($itemid));
+            echo '<div class="container">';
+            $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . 'Record Approved</div>';
+            redirectHome($theMsg, 'back');
+            echo '</div>';
+        } else {
+            echo '<div class="container">';
+            $theMsg = "<div class='alert alert-danger'>there is no ID  like this exist </div>";
+            redirectHome($theMsg, 'back');
+            echo '</div>';
+        }
+        echo '</div>';
     }
     include $tpl . 'footer.php';
 } else {

@@ -85,7 +85,17 @@ body {
   font-size: 15px;
   color: #fff;
   border-radius: 10px;
+  position: relative;
+  overflow: hidden;
 }
+.home-stats .stat i {
+  font-size:80px;
+
+}
+.home-stats .stat .info {
+float: right;
+}
+
 .home-stats .stat a {
   color: #fff;
 }
@@ -113,6 +123,15 @@ body {
   margin-top: 30px;
   /* background-color: #666; */
 }
+.latest  .toggle-info{
+  color: rgb(120, 107, 107);
+  margin-right: 4px;
+  cursor: pointer;
+}
+.latest  .toggle-info:hover{
+  color: #444;
+  margin-right: 4px;
+}
 .latest-users {
   margin-bottom: 0;
 }
@@ -131,6 +150,46 @@ body {
 .latest-users .btn-info {
   margin-right: 5px;
 }
+
+.latest .comment-box {
+	margin: 5px 0 10px;
+}
+
+/* .latest .comment-box .member-n,
+.latest .comment-box .member-c {
+	float: left;
+  
+} */
+
+.latest .comment-box .member-n {
+	width: 80px;
+	text-align: center;
+	margin-right: 20px;
+	position: relative;
+	top: 10px;
+}
+
+.latest .comment-box .member-c {
+    width: calc(100% - 100px);
+    background-color: #EFEFEF;
+    padding: 10px;
+    position: relative;
+  
+}
+
+.latest .comment-box .member-c:before {
+	content: "";
+	display: block;
+	position: absolute;
+	left: -28px;
+	top: 5px;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-color: transparent #EFEFEF transparent transparent;
+	border-width: 15px;
+}
+
 
 .panel {
   border: 1px solid rgb(138, 134, 134);
@@ -172,7 +231,7 @@ h1 {
   padding: 3px 10px;
 }
 .activate {
-  margin-left: 10px;
+  margin-left: 4px;
 }
 /*end member */
 

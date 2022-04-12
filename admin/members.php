@@ -52,7 +52,7 @@ if (isset($_SESSION['username'])) {
                         echo " <td> <a class='btn btn-success' href='members.php?do=Edit&userid=" . $row['UserID'] . "'> <i class='fa fa-edit ' > Edit </i> </a>
                                      <a class='btn btn-danger confirm' href='members.php?do=Delete&userid=" . $row['UserID'] . "'>  <i class='fa fa-close ' > Delete </i> </a>";
                         if ($row['RegStatus'] == 0) {
-                            echo    "<a class='btn btn-info activate' href='members.php?do=Activate&userid=" . $row['UserID'] . "'>  <i class='fa fa-close ' > Activate </i> </a>";
+                            echo    "<a class='btn btn-info activate' href='members.php?do=Activate&userid=" . $row['UserID'] . "'>  <i class='fa fa-check ' > Activate </i> </a>";
                         }
                         echo    "</td>";
 
