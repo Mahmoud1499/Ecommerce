@@ -26,47 +26,59 @@ if (isset($_SESSION['username'])) {
         $stmt = $con->prepare("SELECT * FROM users WHERE GroupID !=1 $query ");
         $stmt->execute();
         $rows = $stmt->fetchAll();
-        // var_dump($rows);
+        if (!empty($rows)) {
+
 ?>
 
-        <h1 class="text-center">Mange Members</h1>
-        <div class="container">
-            <div class="table-responsive">
-                <table class="main-table text-center table table-bordered">
-                    <tr>
-                        <td>#ID</td>
-                        <td>Username</td>
-                        <td>Email</td>
-                        <td>Full Name</td>
-                        <td>Registerd Date</td>
-                        <td>Control</td>
-                    </tr>
-                    <?php
-                    foreach ($rows as $row) {
-                        echo "<tr>";
-                        echo "<td>" . $row['UserID'] . "</td>";
-                        echo "<td>" . $row['UserName'] . "</td>";
-                        echo "<td>" . $row['Email'] . "</td>";
-                        echo "<td>" . $row['FullName'] . "</td>";
-                        echo "<td>" . $row['Date'] . "</td>";
-                        echo " <td> <a class='btn btn-success' href='members.php?do=Edit&userid=" . $row['UserID'] . "'> <i class='fa fa-edit ' > Edit </i> </a>
-                                     <a class='btn btn-danger confirm' href='members.php?do=Delete&userid=" . $row['UserID'] . "'>  <i class='fa fa-close ' > Delete </i> </a>";
-                        if ($row['RegStatus'] == 0) {
-                            echo    "<a class='btn btn-info activate' href='members.php?do=Activate&userid=" . $row['UserID'] . "'>  <i class='fa fa-check ' > Activate </i> </a>";
+            <h1 class="text-center">Mange Members</h1>
+            <div class="container">
+                <div class="table-responsive">
+                    <table class="main-table text-center table table-bordered">
+                        <tr>
+                            <td>#ID</td>
+                            <td>Username</td>
+                            <td>Email</td>
+                            <td>Full Name</td>
+                            <td>Registerd Date</td>
+                            <td>Control</td>
+                        </tr>
+                        <?php
+                        foreach ($rows as $row) {
+                            echo "<tr>";
+                            echo "<td>" . $row['UserID'] . "</td>";
+                            echo "<td>" . $row['UserName'] . "</td>";
+                            echo "<td>" . $row['Email'] . "</td>";
+                            echo "<td>" . $row['FullName'] . "</td>";
+                            echo "<td>" . $row['Date'] . "</td>";
+                            echo " <td> <a class='btn btn-success' href='members.php?do=Edit&userid=" . $row['UserID'] . "'> <i class='fa fa-edit ' > Edit </i> </a>
+                        <a class='btn btn-danger confirm' href='members.php?do=Delete&userid=" . $row['UserID'] . "'>  <i class='fa fa-close ' > Delete </i> </a>";
+                            if ($row['RegStatus'] == 0) {
+                                echo    "<a class='btn btn-info activate' href='members.php?do=Activate&userid=" . $row['UserID'] . "'>  <i class='fa fa-check ' > Activate </i> </a>";
+                            }
+                            echo    "</td>";
+
+                            echo "</tr>";
                         }
-                        echo    "</td>";
 
-                        echo "</tr>";
-                    }
+                        ?>
 
-                    ?>
+                    </table>
+                </div>
 
-                </table>
+                <a class="btn btn-primary" href="members.php?do=Add"> <i class="fa fa-plus"> Add New Member</i> </a>
             </div>
+        <?php } else {
+            echo '<div class="container">';
+            echo '<div class="nice-massage"> There os no Member to show  </div>';
+            echo '<a class="btn btn-primary" href="members.php?do=Add"> <i class="fa fa-plus"> Add New Member</i> </a>';
 
-            <a class="btn btn-primary" href="members.php?do=Add"> <i class="fa fa-plus"> Add New Member</i> </a>
-        </div>
+
+
+            echo '</div>';
+        }
+        ?>
     <?php
+
     } elseif ($do == 'Add') {
         //add members page
         // echo 'add page';
@@ -303,13 +315,23 @@ if (isset($_SESSION['username'])) {
             }
             // no error
             if (empty($formErrors)) {
-                $stmt = $con->prepare("UPDATE users SET username= ?, Email= ?,FullName= ?,Password= ? WHERE UserID= ? ");
 
-                $stmt->execute(array($username, $email, $name, $pass, $id));
+                $stmt2 = $con->prepare("SELECT * FROM `users` WHERE UserName =? AND UserID != ?");
+                $stmt2->execute(array($username, $id));
+                $count = $stmt2->rowCount();
 
-                $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' RECOED UPDATED </div>';
+                if ($count == 1) {
+                    echo '<div class="alert alert-danger"> Sorry This User is exist</div>';
+                    redirectHome($theMsg, 'back');
+                } else {
+                    $stmt = $con->prepare("UPDATE users SET username= ?, Email= ?,FullName= ?,Password= ? WHERE UserID= ? ");
 
-                redirectHome("$theMsg", 'back');
+                    $stmt->execute(array($username, $email, $name, $pass, $id));
+
+                    $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' RECOED UPDATED </div>';
+
+                    redirectHome("$theMsg", 'back');
+                }
             }
         } else {
             echo '<div class="container">';
@@ -344,7 +366,7 @@ if (isset($_SESSION['username'])) {
             $stmt->execute(array($userid));
             echo '<div class="container">';
             $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . 'Record Deleted</div>';
-            redirectHome($theMsg);
+            redirectHome($theMsg, 'back');
             echo '</div>';
         } else {
             echo '<div class="container">';

@@ -19,56 +19,63 @@ if (isset($_SESSION['username'])) {
         // echo "Items Manage page";
         // <!-- WELCOME TO MANAGE PAGE  -->
 
-        $stmt = $con->prepare("SELECT items.* , categories.Name AS category_name, users.UserName  FROM items INNER JOIN users ON items.Member_ID = users.UserID INNER  JOIN categories ON items.Cat_ID = categories.ID");
+        $stmt = $con->prepare("SELECT items.* , categories.Name AS category_name, users.UserName  FROM items INNER JOIN users ON items.Member_ID = users.UserID INNER  JOIN categories ON items.Cat_ID = categories.ID ORDER BY Item_ID DESC ");
         $stmt->execute();
         $items = $stmt->fetchAll();
         // var_dump($rows);
+        if (!empty($items)) {
+
 ?>
 
-        <h1 class="text-center">Mange Items</h1>
-        <div class="container">
-            <div class="table-responsive">
-                <table class="main-table text-center table table-bordered">
-                    <tr>
-                        <td>#ID</td>
-                        <td>Name</td>
-                        <td>Description</td>
-                        <td>Price</td>
-                        <td>Category </td>
-                        <td>Owner</td>
-                        <td>Adding Date</td>
-                        <td>Control</td>
-                    </tr>
-                    <?php
-                    foreach ($items as $item) {
-                        echo "<tr>";
-                        echo "<td>" . $item['Item_ID'] . "</td>";
-                        echo "<td>" . $item['Name'] . "</td>";
-                        echo "<td>" . $item['Description'] . "</td>";
-                        echo "<td>" . $item['Price'] . "</td>";
-                        echo "<td>" . $item['category_name'] . "</td>";
-                        echo "<td>" . $item['UserName'] . "</td>";
-                        echo "<td>" . $item['Add_Date'] . "</td>";
-                        echo " <td> <a class='btn btn-success' href='items.php?do=Edit&itemid=" . $item['Item_ID'] . "'> <i class='fa fa-edit ' > Edit </i> </a>
-                                       <a class='btn btn-danger confirm' href='items.php?do=Delete&itemid=" . $item['Item_ID'] . "'>  <i class='fa fa-close ' > Delete </i> </a>";
-                        if ($item['Approve'] == 0) {
-                            echo    "<a class='btn btn-info activate' href='items.php?do=Approve&itemid=" . $item['Item_ID'] . "'>  <i class='fa fa-check ' > Approve </i> </a>";
+            <h1 class="text-center">Mange Items</h1>
+            <div class="container">
+                <div class="table-responsive">
+                    <table class="main-table text-center table table-bordered">
+                        <tr>
+                            <td>#ID</td>
+                            <td>Name</td>
+                            <td>Description</td>
+                            <td>Price</td>
+                            <td>Category </td>
+                            <td>Owner</td>
+                            <td>Adding Date</td>
+                            <td>Control</td>
+                        </tr>
+                        <?php
+                        foreach ($items as $item) {
+                            echo "<tr>";
+                            echo "<td>" . $item['Item_ID'] . "</td>";
+                            echo "<td>" . $item['Name'] . "</td>";
+                            echo "<td>" . $item['Description'] . "</td>";
+                            echo "<td>" . $item['Price'] . "</td>";
+                            echo "<td>" . $item['category_name'] . "</td>";
+                            echo "<td>" . $item['UserName'] . "</td>";
+                            echo "<td>" . $item['Add_Date'] . "</td>";
+                            echo " <td> <a class='btn btn-success' href='items.php?do=Edit&itemid=" . $item['Item_ID'] . "'> <i class='fa fa-edit ' > Edit </i> </a>
+                        <a class='btn btn-danger confirm' href='items.php?do=Delete&itemid=" . $item['Item_ID'] . "'>  <i class='fa fa-close ' > Delete </i> </a>";
+                            if ($item['Approve'] == 0) {
+                                echo    "<a class='btn btn-info activate' href='items.php?do=Approve&itemid=" . $item['Item_ID'] . "'>  <i class='fa fa-check ' > Approve </i> </a>";
+                            }
+                            echo    "</td>";
+
+                            echo "</tr>";
                         }
-                        echo    "</td>";
 
-                        echo "</tr>";
-                    }
+                        ?>
 
-                    ?>
+                    </table>
+                </div>
 
-                </table>
+                <a class="btn btn-primary" href="items.php?do=Add"> <i class="fa fa-plus"> Add New Item</i> </a>
             </div>
-
-            <a class="btn btn-primary" href="items.php?do=Add"> <i class="fa fa-plus"> Add New Item</i> </a>
-        </div>
-    <?php
+        <?php
+        } else {
+            echo '<div class="container">';
+            echo '<div class="nice-massage"> There os no Items to show  </div>';
+            echo ' <a class="btn btn-primary" href="items.php?do=Add"> <i class="fa fa-plus"> Add New Item</i> </a>';
+        }
     } elseif ($do == 'Add') {
-    ?>
+        ?>
         <h1 class="text-center">Add New Item</h1>
 
         <div class="container">

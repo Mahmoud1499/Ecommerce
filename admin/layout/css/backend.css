@@ -11,6 +11,12 @@ body {
   top: 1px;
   color: red;
 }
+.nice-massage{
+  padding: 10px;
+  background-color: #fff ;
+  margin: 10px 0 ;
+  border-left: 5px solid #080;
+}
 /*end main rules */
 
 /* start login  form */
