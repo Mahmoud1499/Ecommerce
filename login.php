@@ -1,20 +1,55 @@
 <?php
 session_start();
+
+$pageTitle = 'Login';
 include "init.php";
+
+if (isset($_SESSION['user'])) {
+    header('location: index.php'); // redirect dashboard
+
+}
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $user = $_POST['username'];
+    $pass = $_POST['password'];
+
+    // hash password
+    $hashedpass = sha1($pass);
+    // echo $user . ' ' . $hashedpass;
+
+    //check if user exist in db
+    $stmt = $con->prepare("SELECT UserID, UserName , password From users WHERE UserName = ? AND password =? ;");
+    $stmt->execute(array($user, $hashedpass));
+    $row = $stmt->fetch();
+    // var_dump($row);
+    $count = $stmt->rowCount();
+    // echo $count;
+    // check if count > 1 ,dv contan username
+    if ($count > 0) {
+        // echo "welcome $user";
+        $_SESSION['user'] = $user; //session name
+        $_SESSION['ID'] = $row['UserID']; //session ID
+
+
+        // header('location: index.php'); // redirect dashboard
+        exit();
+    } else {
+        echo "no name like ($user) in db";
+    }
+}
 ?>
 
 <div class="container login-page">
     <h1 class="text-center">
         <span class=" selected" data-class="login"> LogIn</span> | <span data-class="signup">SignUp</span>
     </h1>
-    <form class="login" action="">
+    <form class="login" action="<?= $_SERVER['PHP_SELF'] ?>" method="POST">
 
         <div class="input-container">
             <input class="form-control" type="text" name="username" id="" placeholder='Enter Your useraname' required="required" autocomplete="off">
         </div>
 
         <div class="input-container">
-            <input class="form-control" type="text" name="password" id="" placeholder='Enter your password' required="required" autocomplete="new-password">
+            <input class="form-control" type="password" name="password" id="" placeholder='Enter your password' required="required" autocomplete="new-password">
         </div>
         <div class="input-container">
             <input class="btn- btn-primary btn-block" type="submit" value="Login" id="">
@@ -28,15 +63,15 @@ include "init.php";
         </div>
 
         <div class="input-container">
-            <input class="form-control" type="text" name="password" id="" placeholder='Enter a valid password' required="required" autocomplete="new-password">
+            <input class="form-control" type="password" name="password" id="" placeholder='Enter a complex password' required="required" autocomplete="new-password">
         </div>
 
         <div class="input-container">
-            <input class="form-control" type="text" name="password2" id="" placeholder='Enter the password again' required="required" autocomplete="new-password">
+            <input class="form-control" type="password" name="password2" id="" placeholder='Enter the password again' required="required" autocomplete="new-password">
         </div>
 
         <div class="input-container">
-            <input class="form-control" type="email" name="email" id="" placeholder='Enter complex Password' required="required" autocomplete="off">
+            <input class="form-control" type="email" name="email" id="" placeholder='Enter your email' required="required" autocomplete="off">
         </div>
 
 

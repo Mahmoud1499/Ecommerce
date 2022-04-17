@@ -63,53 +63,55 @@ if (isset($_SESSION['username'])) {
     <div class="container latest">
         <div class="row">
             <div class="col-sm-6">
-                <div class="panel panel-default">
-                    <?php $numUsers = 4 ?>
-                    <div class="panel-heading">
+                <div class="card ">
+                    <?php $numUsers = 6 ?>
+                    <div class="card-header bg-primary text-white ">
                         <i class="fa fa-users"></i> Latest <?= $numUsers ?> Registerd Users
                         <span class="pull-right toggle-info ">
                             <i class="fa fa-minus"></i>
                         </span>
                     </div>
-                    <div class="panel-body">
-                        <ul class="list-unstyled latest-users ">
-                            <?php
-                            $theLatestUsers = getLatest("*", 'users', 'UserID', $numUsers);
-                            if (!empty($theLatestUsers)) {
-                                foreach ($theLatestUsers as $user) {
-                                    echo '<li>';
-                                    echo $user['UserName'];
-                                    echo '<a href="members.php?do=Edit&userid=' . $user['UserID'] . '">';
-                                    echo '<span class="btn btn-success pull-right">';
-                                    echo '<i class="fa fa-edit"></i> Edit';
-                                    if ($user['RegStatus'] == 0) {
-                                        echo    "<a class='btn btn-info pull-right activate' href='members.php?do=Activate&userid=" . $user['UserID'] . "'>  <i class='fa fa-check ' > Activate </i> </a>";
+                    <div class="card border-primary">
+                        <div class="card-body">
+                            <ul class="list-unstyled latest-users ">
+                                <?php
+                                $theLatestUsers = getLatest("*", 'users', 'UserID', $numUsers);
+                                if (!empty($theLatestUsers)) {
+                                    foreach ($theLatestUsers as $user) {
+                                        echo '<li>';
+                                        echo $user['UserName'];
+                                        echo '<a href="members.php?do=Edit&userid=' . $user['UserID'] . '">';
+                                        echo '<span class="btn btn-success pull-right">';
+                                        echo '<i class="fa fa-edit"></i> Edit';
+                                        if ($user['RegStatus'] == 0) {
+                                            echo    "<a class='btn btn-info pull-right activate' href='members.php?do=Activate&userid=" . $user['UserID'] . "'>  <i class='fa fa-check ' > Activate </i> </a>";
+                                        }
+                                        echo '</span>';
+                                        echo '</a>';
+                                        echo '</li>';
                                     }
-                                    echo '</span>';
-                                    echo '</a>';
-                                    echo '</li>';
+                                } else {
+                                    echo 'There\'s nothing to show ';
                                 }
-                            } else {
-                                echo 'There\'s nothing to show ';
-                            }
-                            ?>
-                        </ul>
+                                ?>
+                            </ul>
+                        </div>
                     </div>
+
                 </div>
             </div>
             <div class="col-sm-6">
-                <div class="panel panel-default">
+                <div class="card border-primary">
                     <?php $latestItems = 6 ?>
 
-                    <div class="panel-heading">
+                    <div class="card-header bg-primary text-white  ">
                         <i class="fa fa-tag"></i> Latest <?= $latestItems ?> Added Items
                         <span class="pull-right toggle-info ">
                             <i class="fa fa-minus"></i>
                         </span>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <ul class="list-unstyled latest-users ">
-
                             <?php
                             $theLatestItems = getLatest("*", 'items', 'Item_ID', $latestItems);
                             if (!empty($theLatestItems)) {
@@ -142,16 +144,16 @@ if (isset($_SESSION['username'])) {
 
         <div class="row">
             <div class="col-sm-6">
-                <div class="panel panel-default">
+                <div class="card border-primary">
                     <?php $numComments = 3 ?>
 
-                    <div class="panel-heading">
+                    <div class="card-header bg-primary text-white ">
                         <i class="fa fa-comments-o"></i> Latest <?= $numComments ?> Comments
                         <span class="pull-right toggle-info ">
                             <i class="fa fa-minus"></i>
                         </span>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <?php
 
 
@@ -170,7 +172,7 @@ if (isset($_SESSION['username'])) {
                                 echo '<span class="member-n">
                                         <a href="members.php?do=Edit&userid=' . $comment['user_id'] . '">
                                             ' . $comment['UserName'] . '</a></span>';
-                                // echo '<p class="member-c">' . $comment['comment'] . '</p>';
+                                echo '<p class="member-c">' . $comment['comment'] . '</p>';
                                 echo '</div>';
                             }
                         } else {

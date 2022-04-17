@@ -21,7 +21,16 @@ function getItems($CatID)
 }
 
 
+// check users statues
+function checkUserStatus($user)
+{
+    global $con;
 
+    $stmtx = $con->prepare("SELECT  UserName ,RegStatus From users WHERE UserName = ? AND RegStatus =0 ;");
+    $stmtx->execute(array($user));
+    $status = $stmtx->rowCount();
+    return $status;
+}
 
 
 

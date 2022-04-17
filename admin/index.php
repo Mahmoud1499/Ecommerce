@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
 <form class="login" action="<?= $_SERVER['PHP_SELF'] ?>" method="POST">
-    <h4 class="text-center">admin login</h4>
+    <h4 class="text-center words">admin login</h4>
     <input class="form-control input-lg" type="text" name="user" placeholder="Username" autocomplete="off" />
     <input class="form-control input-lg" type="password" name="pass" placeholder="Password" autocomplete="new-password" />
     <input class="btn btn-primary btn-block btn-lg" type="submit" name="Login" value="Login" />

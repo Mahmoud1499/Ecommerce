@@ -93,8 +93,14 @@ background-color:white;
 .login-page form  input {
 margin-bottom: 10px;
 }
-.login-page .selected{
+/* .login-page .selected{
   color: #822020;
+} */
+.login-page [data-class="login"].selected{
+  color: #337ab7;
+}
+.login-page [data-class="signup"].selected{
+color: #5cb85c;
 }
 .login-page h1{
   color: #c0c0c0;
@@ -105,6 +111,7 @@ cursor: pointer;
 .login-page .signup{
   display: none;
 }
+
 
 
 /* end login */
@@ -126,3 +133,14 @@ top: 10px;
 }
 /* end categry */
 
+/* start profile */
+.block{
+  margin:20px 0 0 ;
+
+}
+.information{
+  
+}
+
+
+/* end profile */

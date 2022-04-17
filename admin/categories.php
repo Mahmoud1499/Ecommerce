@@ -30,8 +30,8 @@ if (isset($_SESSION['username'])) {
 ?>
         <h1 class="text-center">Manage Category</h1>
         <div class="container categories">
-            <div class="panel panel-default">
-                <div class="panel-heading"> <i class="fa fa-edit"></i> Manege Categories
+            <div class="card card-default">
+                <div class="card-heading"> <i class="fa fa-edit"></i> Manege Categories
                     <div class="option pull-right">
                         <i class="fa fa-sort"></i> Ordering:[
                         <a class="<?php if ($sort == 'ASC') {
@@ -43,7 +43,7 @@ if (isset($_SESSION['username'])) {
                         <i class="fa fa-eye"></i> View: [<span class="" data-view="full">Full</span> | <span class="" data-view="classic">Classic</span>]
                     </div>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
                     <?php
                     foreach ($cats as $cat) {
                         echo "<div class='cat'>";
