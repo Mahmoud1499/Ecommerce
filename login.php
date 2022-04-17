@@ -2,39 +2,45 @@
 session_start();
 
 $pageTitle = 'Login';
-include "init.php";
 
 if (isset($_SESSION['user'])) {
-    header('location: index.php'); // redirect dashboard
+    header('location: index.php'); // redirect 
 
 }
+
+include "init.php";
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $user = $_POST['username'];
-    $pass = $_POST['password'];
+    if (isset($_POST['login'])) {
 
-    // hash password
-    $hashedpass = sha1($pass);
-    // echo $user . ' ' . $hashedpass;
+        $user = $_POST['username'];
+        $pass = $_POST['password'];
+        // hash password
+        $hashedpass = sha1($pass);
+        // echo $user . ' ' . $hashedpass;
 
-    //check if user exist in db
-    $stmt = $con->prepare("SELECT UserID, UserName , password From users WHERE UserName = ? AND password =? ;");
-    $stmt->execute(array($user, $hashedpass));
-    $row = $stmt->fetch();
-    // var_dump($row);
-    $count = $stmt->rowCount();
-    // echo $count;
-    // check if count > 1 ,dv contan username
-    if ($count > 0) {
-        // echo "welcome $user";
-        $_SESSION['user'] = $user; //session name
-        $_SESSION['ID'] = $row['UserID']; //session ID
+        //check if user exist in db
+        $stmt = $con->prepare("SELECT UserID, UserName , password From users WHERE UserName = ? AND password =? ;");
+        $stmt->execute(array($user, $hashedpass));
+        $row = $stmt->fetch();
+        // var_dump($row);
+        $count = $stmt->rowCount();
+        // echo $count;
+        // check if count > 1 ,dv contan username
+        if ($count > 0) {
+            // echo "welcome $user";
+            $_SESSION['user'] = $user; //session name
+            $_SESSION['ID'] = $row['UserID']; //session ID
 
 
-        // header('location: index.php'); // redirect dashboard
-        exit();
+            header('location: index.php'); // redirect 
+            exit();
+        }
     } else {
-        echo "no name like ($user) in db";
+        $test = $_POST['username'];
     }
+} else {
+    echo "no name like ($user) in db";
 }
 ?>
 
@@ -52,12 +58,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input class="form-control" type="password" name="password" id="" placeholder='Enter your password' required="required" autocomplete="new-password">
         </div>
         <div class="input-container">
-            <input class="btn- btn-primary btn-block" type="submit" value="Login" id="">
+            <input class="btn- btn-primary btn-block" type="submit" name='login' value="Login" id="">
         </div>
 
     </form>
 
-    <form class="signup" action="">
+    <form class="signup" action="<?= $_SERVER['PHP_SELF'] ?>" method="POST">
         <div class="input-container">
             <input class="form-control" type="text" name="username" id="" placeholder='Enter Your useraname' required="required" autocomplete="off">
         </div>
@@ -75,8 +81,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
 
 
-        <input class="btn- btn-success btn-block" type="submit" value="Sign up" id="">
+        <input class="btn- btn-success btn-block" type="submit" name='signup' value="Sign up" id="">
     </form>
+    <div class="the-error text-center">
+        <?= $test ?>
+    </div>
 </div>
 
 

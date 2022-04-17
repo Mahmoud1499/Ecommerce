@@ -11,11 +11,11 @@ function getCat()
 }
 
 //get items 
-function getItems($CatID)
+function getItems($where, $value)
 {
     global $con;
-    $getItems = $con->prepare("SELECT * FROM items WHERE cat_id = ? ORDER BY Item_ID DESC");
-    $getItems->execute(array($CatID));
+    $getItems = $con->prepare("SELECT * FROM items WHERE $where = ? ORDER BY Item_ID DESC");
+    $getItems->execute(array($value));
     $items = $getItems->fetchAll();
     return $items;
 }

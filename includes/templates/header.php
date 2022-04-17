@@ -40,12 +40,12 @@
 
             if (isset($_SESSION['user'])) {
 
-                echo "<span class='text-center'> Welcome " . $_SESSION['user'] . "</span>";
+                echo "<span class='text-center'> Welcome " . $sessionsUser . "</span>";
                 echo   '<a href="profile.php">   My Profile   </a>';
 
                 // var_dump(checkUserStatus($_SESSION['user']));
                 // checkUserStatus($_SESSION['user']);
-                if (checkUserStatus($_SESSION['user']) == 1) {
+                if (checkUserStatus($sessionsUser) == 1) {
                     echo ' your are not activated right now';
                 } else {
                     echo '  (activated)  ';

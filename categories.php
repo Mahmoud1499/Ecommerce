@@ -13,7 +13,7 @@ include "init.php";
     <div class="row">
         <?php
 
-        foreach (getItems($_GET['pageid']) as $item) {
+        foreach (getItems('cat_id', $_GET['pageid']) as $item) {
             echo "<div class='col-sm-6 col-md-4'>";
             echo "<div class='img-thumbnail item-box'>";
             echo "<span class='price-tag'> " . $item['Price'] . "</span>";

@@ -1,5 +1,19 @@
 <?php
+//error report 
+ini_set('display_errors', 'on');
+
+
+
+// ----------------------------------------------------------------
 include 'admin/connect.php';
+
+//sessions
+$sessionsUser = '';
+
+if (isset($_SESSION['user'])) {
+    $sessionsUser = $_SESSION['user'];
+}
+
 //routes
 
 $tpl = 'includes/templates/'; //wlecome to index
