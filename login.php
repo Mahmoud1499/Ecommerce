@@ -37,10 +37,60 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit();
         }
     } else {
-        $test = $_POST['username'];
+        // $test = $_POST['username'];
+        $formErrors = array();
+
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $password2 = $_POST['password2'];
+
+        $email = $_POST['email'];
+
+        if (isset($username)) {
+            $filterUser = filter_var($username, FILTER_SANITIZE_STRING);
+            // echo $filterUser;
+            if (strlen($filterUser) < 4) {
+                $formErrors[] = 'UserName Must be at least 4 characters';
+            }
+        }
+
+        if (isset($password) &&   $password2) {
+
+            if (empty($password)) {
+                $formErrors[] = 'Please Enter a password';
+            }
+            $pass1 = sha1($password);
+            $pass2 = sha1($password2);
+
+            if ($pass1 !== $pass2) {
+                $formErrors[] = ' Password mismatch';
+            }
+        }
+
+
+        if (isset($email)) {
+            $filterEmail = filter_var($email, FILTER_SANITIZE_EMAIL);
+            // echo $filterEmail;
+            if (filter_var($filterEmail, FILTER_SANITIZE_EMAIL) != true) {
+                $formErrors[] = 'Email is not a valid Email ';
+            }
+        }
+        // Check If There's No Error 
+        if (empty($formErrors)) {
+            // Check If User Exist 
+            $check = checkItem("Username", "users", $username);
+            if ($check == 1) {
+                $formErrors[] = 'Sorry This User Is Exists';
+            } else {
+
+                // Insert Userinfo 
+                $stmt = $con->prepare("INSERT INTO users(Username, Password, Email, RegStatus, Date)
+									    	VALUES(?, ?, ?, 0, now())");
+                $stmt->execute(array($username, sha1($password), $email));
+                $succesMsg = 'Congrats You Are Now Registerd User';
+            }
+        }
     }
-} else {
-    echo "no name like ($user) in db";
 }
 ?>
 
@@ -51,41 +101,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <form class="login" action="<?= $_SERVER['PHP_SELF'] ?>" method="POST">
 
         <div class="input-container">
-            <input class="form-control" type="text" name="username" id="" placeholder='Enter Your useraname' required="required" autocomplete="off">
+            <input class="form-control" type="text" name="username" pattern=".{4,}" title='Username Muste be More tahn 4 characters' placeholder='Enter Your username' required="required" autocomplete="off">
         </div>
 
         <div class="input-container">
-            <input class="form-control" type="password" name="password" id="" placeholder='Enter your password' required="required" autocomplete="new-password">
+            <input class="form-control" type="password" name="password" placeholder='Enter your password' required="required" autocomplete="new-password">
         </div>
         <div class="input-container">
-            <input class="btn- btn-primary btn-block" type="submit" name='login' value="Login" id="">
+            <input class="btn- btn-primary btn-block" type="submit" name='login' value="Login">
         </div>
 
     </form>
 
     <form class="signup" action="<?= $_SERVER['PHP_SELF'] ?>" method="POST">
         <div class="input-container">
-            <input class="form-control" type="text" name="username" id="" placeholder='Enter Your useraname' required="required" autocomplete="off">
+            <input class="form-control" type="text" name="username" pattern=".{4,}" title='Username Muste be More tahn 4 characters' placeholder='Enter Your useraname' required="required" autocomplete="off">
         </div>
 
         <div class="input-container">
-            <input class="form-control" type="password" name="password" id="" placeholder='Enter a complex password' required="required" autocomplete="new-password">
+            <input class="form-control" type="password" name="password" minlength="4" placeholder='Enter a complex password' required="required" autocomplete="new-password">
         </div>
 
         <div class="input-container">
-            <input class="form-control" type="password" name="password2" id="" placeholder='Enter the password again' required="required" autocomplete="new-password">
+            <input class="form-control" type="password" name="password2" minlength="4" placeholder='Enter the password again' required="required" autocomplete="new-password">
         </div>
 
         <div class="input-container">
-            <input class="form-control" type="email" name="email" id="" placeholder='Enter your email' required="required" autocomplete="off">
+            <input class="form-control" type="email" name="email" placeholder='Enter your email' required="required" autocomplete="off">
         </div>
 
 
-        <input class="btn- btn-success btn-block" type="submit" name='signup' value="Sign up" id="">
+        <input class="btn- btn-success btn-block" type="submit" name='signup' value="Sign up">
     </form>
+
+
     <div class="the-error text-center">
-        <?= $test ?>
+        <?php
+        if (!empty($formErrors)) {
+
+            foreach ($formErrors as $error) {
+                echo '<div class="msg error">' . $error . '</div>';
+            }
+        }
+
+        if (isset($succesMsg)) {
+            echo '<div class="msg success">' . $succesMsg . '</div>';
+        }
+
+        ?>
     </div>
+
+
 </div>
 
 
