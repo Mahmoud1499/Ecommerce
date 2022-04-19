@@ -22,15 +22,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         //check if user exist in db
         $stmt = $con->prepare("SELECT UserID, UserName , password From users WHERE UserName = ? AND password =? ;");
         $stmt->execute(array($user, $hashedpass));
-        $row = $stmt->fetch();
-        // var_dump($row);
+        $get = $stmt->fetch();
+        // var_dump($get);
         $count = $stmt->rowCount();
         // echo $count;
         // check if count > 1 ,dv contan username
         if ($count > 0) {
             // echo "welcome $user";
             $_SESSION['user'] = $user; //session name
-            $_SESSION['ID'] = $row['UserID']; //session ID
+            $_SESSION['uid'] = $get['UserID']; //session ID
 
 
             header('location: index.php'); // redirect 
@@ -87,6 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $stmt = $con->prepare("INSERT INTO users(Username, Password, Email, RegStatus, Date)
 									    	VALUES(?, ?, ?, 0, now())");
                 $stmt->execute(array($username, sha1($password), $email));
+
                 $succesMsg = 'Congrats You Are Now Registerd User';
             }
         }

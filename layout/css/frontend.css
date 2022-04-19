@@ -21,6 +21,13 @@ h1 {
   top: 7px;
   color: red;
 }
+.main-form .asterisk {
+  font-size: 30px;
+  position: absolute;
+  right: 30px;
+  top: 0px;
+  color: red;
+}
 .nice-massage{
   padding: 10px;
   background-color: #fff ;
@@ -156,7 +163,22 @@ top: 10px;
 
 }
 .information{
+  margin-top: 20px;
+}
+.information ul{
+  Padding: 0;
+  margin:0;
   
+}
+.information ul li{
+padding: 10px;
+}
+.information ul li:nth-child(odd){
+background-color:#eee ;
+}
+.information ul li span{
+  display: inline-block;
+  width: 150px;
 }
 
 

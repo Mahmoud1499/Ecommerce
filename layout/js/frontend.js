@@ -51,6 +51,14 @@ $(function(){
       $(this).next('.full-view').fadeToggle(200);
     });
 
+    $('.live').keyup(function () {
 
+		$($(this).data('class')).text($(this).val());
+
+	});
+
+
+
+    
 });
 

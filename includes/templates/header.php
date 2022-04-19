@@ -40,9 +40,7 @@
 
             if (isset($_SESSION['user'])) {
 
-                echo "<span class='text-center'> Welcome " . $sessionsUser . "</span>";
-                echo   '<a href="profile.php">   My Profile   </a>';
-
+                echo " <span class='text-center'> Welcome " . $sessionsUser . "</span>";
                 // var_dump(checkUserStatus($_SESSION['user']));
                 // checkUserStatus($_SESSION['user']);
                 if (checkUserStatus($sessionsUser) == 1) {
@@ -51,12 +49,13 @@
                     echo '  (activated)  ';
                 };
 
-
-                echo   '<a href="logout.php">   logout   </a>';
+                echo   ' - <a href="profile.php">   My Profile   </a>';
+                echo ' - <a href="newad.php"> New Ad </a>';
+                echo   '<a href="logout.php"> -  logout   </a>';
             } else {
             ?>
                 <a href="login.php">
-                    <span class="text-center">Login/Signup</span>
+                    <span class="text-center"> Login/Signup</span>
                 </a>
             <?php
                 // var_dump($_SESSION['user']);
