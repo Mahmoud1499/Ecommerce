@@ -2,7 +2,7 @@
 session_start();
 $pageTitle = 'Create new Ad';
 include "init.php";
-var_dump($_SESSION);
+// var_dump($_SESSION);
 
 if (isset($_SESSION['user'])) {
 
