@@ -54,16 +54,80 @@ if ($count > 0) {
                 </ul>
             </div>
         </div>
-
         <hr class="custom-hr">
-        <div class="row">
-            <div class="col-md-3">
-                User Image
+        <?php
+        if (isset($_SESSION['user'])) {
+        ?>
+
+            <div class="row m-3">
+                <div class="col-md-offset-3">
+                    <h3> Add Your comment </h3>
+                    <div class="add-comment ">
+                        <form action="<?= $_SERVER['PHP_SELF'] . '?itemid=' . $item['Item_ID']    ?>" method="POST">
+                            <textarea class="form-control" name="comment" cols="30" rows="10"></textarea>
+                            <input class="btn btn-primary  " type="submit" value="Add Comment">
+                        </form>
+                        <?php
+                        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                            // var_dump($_POST);
+                            // echo $_POST['comment'];
+                            $comment     = filter_var($_POST['comment'], FILTER_SANITIZE_STRING);
+                            $itemid     = $item['Item_ID'];
+                            $userid     = $_SESSION['uid'];
+
+                            if (!empty($comment)) {
+
+                                $stmt = $con->prepare("INSERT INTO comments(comment, status, comment_date, item_id, user_id)
+							                        	VALUES(:zcomment, 0, NOW(), :zitemid, :zuserid)");
+
+                                $stmt->execute(array('zcomment' => $comment, 'zitemid' => $itemid, 'zuserid' => $userid));
+
+                                if ($stmt) {
+                                    echo '<div class="alert alert-success">Comment Added</div>';
+                                }
+                            } else {
+                                echo '<div class="alert alert-danger">You Must Add Comment</div>';
+                            }
+                        }
+                        ?>
+                    </div>
+
+
+                </div>
             </div>
-            <div class="col-md-9">
-                User Comment
+        <?php } else {
+
+            echo '<div class=" "> <a href="login.php"> Login </a> or <a href="login.php"> register </a> to Add comment</div>';
+        }
+        ?>
+        <hr class="custom-hr">
+        <?php
+        // Select All Users Except Admin 
+        $stmt = $con->prepare("SELECT comments.*, users.Username AS Member  
+                        FROM  comments
+                        INNER JOIN  users  ON  users.UserID = comments.user_id
+                        WHERE  item_id = ?AND  status = 1
+                        ORDER BY c_id DESC");
+
+        $stmt->execute(array($item['Item_ID']));
+
+        $comments = $stmt->fetchAll();
+        ?>
+
+        <?php foreach ($comments as $comment) { ?>
+            <div class="comment-box">
+                <div class="row">
+                    <div class="col-sm-2 text-center">
+                        <img class="img-responsive mg-fluid rounded-circle  img-circle img-thumbnail center-block" alt="" src='https://th.bing.com/th/id/OIP.2RR4RuG1NyW5PsfzQN_sKgHaE8?pid=ImgDet&rs=1' alt="" />
+                        <?= $comment['Member'] ?>
+                    </div>
+                    <div class="col-sm-10">
+                        <p class="lead"><?= $comment['comment'] ?></p>
+                    </div>
+                </div>
             </div>
-        </div>
+            <hr class="custom-hr">
+        <?php } ?>
     </div>
 
 
