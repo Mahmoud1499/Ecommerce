@@ -29,7 +29,7 @@ if (isset($_SESSION['user'])) {
         </div>
     </div>
 
-    <div class="my-ads block">
+    <div id="my-ads" class="my-ads block">
         <div class="container ">
             <div class="card border-primary  ">
                 <div class="card-header bg-primary text-white">My Ads</div>
@@ -37,10 +37,13 @@ if (isset($_SESSION['user'])) {
                     <?php
                     if (!empty(getItems('Member_ID', $info['UserID']))) {
 
-                        foreach (getItems('Member_ID', $info['UserID']) as $item) {
+                        foreach (getItems('Member_ID', $info['UserID'], 1) as $item) {
                             // var_dump($item);
-                            echo "<div class='col-sm-6 col-md-4'>";
+                            echo "<div class='col-sm-6 col-md-4 float-left'>";
                             echo "<div class='img-thumbnail item-box'>";
+                            if ($item['Approve'] == 0) {
+                                echo "<div class='approve-status' >Wating for approval</div>";
+                            }
                             echo "<span class='price-tag'>$ " . $item['Price'] . "</span>";
                             echo "<img class='rounded img-fluid' src='https://th.bing.com/th/id/OIP.2RR4RuG1NyW5PsfzQN_sKgHaE8?pid=ImgDet&rs=1' alt='' />";
                             echo "<div class='caption'>";

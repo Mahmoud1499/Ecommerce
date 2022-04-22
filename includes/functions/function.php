@@ -11,10 +11,15 @@ function getCat()
 }
 
 //get items 
-function getItems($where, $value)
+function getItems($where, $value, $approve = NULL)
 {
+    if ($approve == NUll) {
+        $sql = "AND Approve = 1 ";
+    } else {
+        $sql = NULL;
+    }
     global $con;
-    $getItems = $con->prepare("SELECT * FROM items WHERE $where = ? ORDER BY Item_ID DESC");
+    $getItems = $con->prepare("SELECT * FROM items WHERE $where = ? $sql ORDER BY Item_ID DESC");
     $getItems->execute(array($value));
     $items = $getItems->fetchAll();
     return $items;

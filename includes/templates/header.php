@@ -37,58 +37,86 @@
             <?php
             // var_dump($_SESSION['user']);
             // var_dump($_GET);
+            if (isset($_SESSION['user'])) { ?>
 
-            if (isset($_SESSION['user'])) {
+                <img class="my-image img-fluid  rounded-circle  " src='https://th.bing.com/th/id/OIP.2RR4RuG1NyW5PsfzQN_sKgHaE8?pid=ImgDet&rs=1' alt="" />
+                <div class="btn-group my-info">
+                    <span class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <?php echo $_SESSION['user'] ?>
+                        <span class="caret"></span>
+                    </span>
+                    <ul class="dropdown-menu">
+                        <li><a href="profile.php">My Profile</a></li>
+                        <li><a href="newad.php">New Item</a></li>
+                        <li><a href="profile.php#my-ads">My Items</a></li>
+                        <li><a href="logout.php">Logout</a></li>
+                    </ul>
+                </div>
 
-                echo " <span class='text-center'> Welcome " . $sessionsUser . "</span>";
-                // var_dump(checkUserStatus($_SESSION['user']));
-                // checkUserStatus($_SESSION['user']);
-                if (checkUserStatus($sessionsUser) == 1) {
-                    echo ' your are not activated right now';
-                } else {
-                    echo '  (activated)  ';
-                };
+            <?php
 
-                echo   ' - <a href="profile.php">   My Profile   </a>';
-                echo ' - <a href="newad.php"> New Ad </a>';
-                echo   '<a href="logout.php"> -  logout   </a>';
             } else {
             ?>
                 <a href="login.php">
-                    <span class="text-center"> Login/Signup</span>
+                    <span class="pull-right">Login/Signup</span>
                 </a>
+            <?php } ?>
+        </div>
+    </div>
+
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+
             <?php
-                // var_dump($_SESSION['user']);
-            }
+            // var_dump($_SESSION['user']);
+            // var_dump($_GET);
+            if (isset($_SESSION['user'])) { ?>
+
+                <img class="my-image img-fluid  rounded-circle pull-left " src='https://th.bing.com/th/id/OIP.2RR4RuG1NyW5PsfzQN_sKgHaE8?pid=ImgDet&rs=1' alt="" />
+                <div class="btn-group my-info">
+                    <span class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <?php echo '<span class="text-white pull-left">' .  $_SESSION['user'] . '</span>' ?>
+                        <span class="caret "></span>
+                    </span>
+                    <ul class="dropdown-menu">
+                        <li><a href="profile.php">My Profile</a></li>
+                        <li><a href="newad.php">New Item</a></li>
+                        <li><a href="profile.php#my-ads">My Items</a></li>
+                        <li><a href="logout.php">Logout</a></li>
+                    </ul>
+                </div>
+
+            <?php
+
+            } else {
             ?>
+                <a href="login.php">
+                    <span class="pull-right">Login/Signup</span>
+                </a>
+            <?php } ?>
+            <a class="nav-link text-white" href="index.php"><?= lang('HOME PAGE') ?> <span class="sr-only"></span></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item ">
+                    </li>
+                </ul>
+                <ul class="navbar-nav mr-auto">
+                    <?php
+                    foreach (getCat() as $cat) {
+                        // echo $cat['ID'];
+                        echo "<li class='nav-item '> <a class='nav-link'  href='categories.php?pageid=" . $cat['ID'] . '&pagename=' . str_replace(' ', '-', $cat['Name']) . "' >" . $cat['Name'] . "</a> </li>";
+                    }
+                    ?>
+
+
+                </ul>
+
+            </div>
         </div>
 
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container">
-
-                <a class="navbar-brand" href="index.php">Ecommerce Website</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item ">
-                            <a class="nav-link" href="index.php"><?= lang('HOME PAGE') ?> <span class="sr-only"></span></a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <?php
-                        foreach (getCat() as $cat) {
-                            // echo $cat['ID'];
-                            echo "<li class='nav-item '> <a class='nav-link'  href='categories.php?pageid=" . $cat['ID'] . '&pagename=' . str_replace(' ', '-', $cat['Name']) . "' >" . $cat['Name'] . "</a> </li>";
-                        }
-                        ?>
-
-
-                    </ul>
-
-                </div>
-            </div>
-
-        </nav>
+    </nav>

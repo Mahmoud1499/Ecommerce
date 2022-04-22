@@ -64,7 +64,7 @@ if ($count > 0) {
                     <h3> Add Your comment </h3>
                     <div class="add-comment ">
                         <form action="<?= $_SERVER['PHP_SELF'] . '?itemid=' . $item['Item_ID']    ?>" method="POST">
-                            <textarea class="form-control" name="comment" cols="30" rows="10"></textarea>
+                            <textarea class="form-control" name="comment" cols="30" rows="10" required="required"></textarea>
                             <input class="btn btn-primary  " type="submit" value="Add Comment">
                         </form>
                         <?php
@@ -137,6 +137,7 @@ if ($count > 0) {
 <?php
 } else {
     echo '<div class="alert alert-danger">There Is  No Such ID </div>';
+    echo '<div class="alert alert-danger">OR watting for Approve </div>';
 }
 
 

@@ -21,6 +21,8 @@ include "init.php";
             echo "<div class='caption'>";
             echo '<h3 class="" > <a href="item.php?itemid=' . $item['Item_ID'] . ' "> ' . $item['Name'] . " </a> </h3>";
             echo "<p class=''>   " . $item['Description'] . "   </p>";
+            echo "<div class='date'>" . $item['Add_Date'] . "</div>";
+
             echo "</div>";
             echo "</div>";
             echo "</div>";
