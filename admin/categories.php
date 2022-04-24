@@ -24,7 +24,7 @@ if (isset($_SESSION['username'])) {
             $sort = $_GET['sort'];
         }
 
-        $stmt2 = $con->prepare("SELECT * FROM categories ORDER BY ordering $sort  ");
+        $stmt2 = $con->prepare("SELECT * FROM categories Where parent = 0 ORDER BY ordering $sort  ");
         $stmt2->execute();
         $cats = $stmt2->fetchAll();
 ?>
@@ -70,6 +70,19 @@ if (isset($_SESSION['username'])) {
                         if ($cat['Allow_Ads'] == 1) {
                             echo '<span class="ads"> <i class="fa fa-close"></i> Ads disapled </span>';
                         }
+                        //  Child Categories
+                        $childCats = getAllFrom("*", "categories", "where parent = {$cat['ID']}", "", "ID", "ASC");
+                        if (!empty($childCats)) {
+                            echo "<h4 class='child-head'>Child Categories:</h4>";
+                            echo "<ul class='list-unstyled child-cats'>";
+                            foreach ($childCats as $c) {
+                                echo "<li class='child-link'>
+												<a href='categories.php?do=Edit&catid=" . $c['ID'] . "'>" . $c['Name'] . "</a>
+												<a href='categories.php?do=Delete&catid=" . $c['ID'] . "' class='show-delete confirm'> Delete</a>
+                                                </li>";
+                            }
+                            echo "</ul>";
+                        }
                         echo '</div>';
                         echo '</div>';
                         echo '<hr> ';
@@ -101,7 +114,6 @@ if (isset($_SESSION['username'])) {
                     <label class="col-sm-2 col-md-6 control-label" for="description"> Description </label>
                     <div class="col-sm-10">
                         <input class=" form-control" type="text" name="description" placeholder="Describe the category ">
-
                     </div>
                 </div>
 
@@ -111,6 +123,22 @@ if (isset($_SESSION['username'])) {
                         <input class="form-control" type="text" name="ordering" " placeholder=" Number to arrange the category">
                     </div>
                 </div>
+
+                <div class="form-group form-group-lg">
+                    <label class=" col-sm-2 col-md-6 control-label" for="ordering"> Category Type </label>
+                    <div class="col-sm-10">
+                        <select name="parent" id="">
+                            <option value="0">None</option>
+                            <?php
+                            $allCats = getAllFrom("*", "categories", "where parent = 0", "", "ID", "ASC");
+                            foreach ($allCats as $cat) {
+                                echo "<option value='" . $cat['ID'] . "'>" . $cat['Name'] . "</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+
 
                 <div class="form-group form-group-lg">
                     <label class=" col-sm-2 control-label" for="Visable"> Visable </label>
@@ -175,6 +203,7 @@ if (isset($_SESSION['username'])) {
             $name = $_POST['name'];
             $desc = $_POST['description'];
             $oder = $_POST['ordering'];
+            $parent = $_POST['parent'];
             $visible = $_POST['visability'];
             $comment = $_POST['commenting'];
             $ads = $_POST['ads'];
@@ -189,9 +218,9 @@ if (isset($_SESSION['username'])) {
                 redirectHome($theMsg, 'back');
             } else {
 
-                $stmt = $con->prepare("INSERT INTO categories(Name, Description, Ordering, Visibility , Allow_Comment, Allow_Ads) VALUES(?,?,?,?,?,?) ");
+                $stmt = $con->prepare("INSERT INTO categories(Name, Description, Ordering, parent , Visibility , Allow_Comment, Allow_Ads) VALUES(?,?,?,?,?,?,?) ");
 
-                $stmt->execute(array($name, $desc, $oder, $visible, $comment, $ads));
+                $stmt->execute(array($name, $desc, $oder, $parent, $visible, $comment, $ads));
 
                 $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . '  ONE RECOED INSERTED </div>';
 
@@ -253,6 +282,25 @@ if (isset($_SESSION['username'])) {
 <label class=" col-sm-2 col-md-6 control-label" for="ordering"> ordering </label>
                 <div class="col-sm-10">
                     <input class="form-control" type="text" name="ordering" " placeholder=" Number to arrange the category" value="<?= $cat['Ordering'] ?>">
+                </div>
+            </div>
+
+            <div class="form-group form-group-lg">
+                <label class="col-sm-2 control-label">Parent?</label>
+                <div class="col-sm-10 col-md-6">
+                    <select name="parent">
+                        <option value="0">None</option>
+                        <?php
+                        $allCats = getAllFrom("*", "categories", "where parent = 0", "", "ID", "ASC");
+                        foreach ($allCats as $c) {
+                            echo "<option value='" . $c['ID'] . "'";
+                            if ($cat['parent'] == $c['ID']) {
+                                echo ' selected';
+                            }
+                            echo ">" . $c['Name'] . "</option>";
+                        }
+                        ?>
+                    </select>
                 </div>
             </div>
 
@@ -338,14 +386,15 @@ if (isset($_SESSION['username'])) {
             $name = $_POST['name'];
             $desc = $_POST['description'];
             $order = $_POST['ordering'];
+            $parent = $_POST['parent'];
             $visable = $_POST['visability'];
             $comment = $_POST['commenting'];
             $ads = $_POST['ads'];
 
 
-            $stmt = $con->prepare("UPDATE categories SET Name= ?, Description= ?,Ordering= ?,Visibility= ? ,Allow_Comment=?, Allow_Ads=? WHERE ID= ? ");
+            $stmt = $con->prepare("UPDATE categories SET Name= ?, Description= ?,Ordering= ? ,parent=? ,Visibility= ? ,Allow_Comment=?, Allow_Ads=? WHERE ID= ? ");
 
-            $stmt->execute(array($name, $desc, $order, $visable, $comment, $ads, $id));
+            $stmt->execute(array($name, $desc, $order, $parent, $visable, $comment, $ads, $id));
 
             $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' RECOED UPDATED </div>';
 

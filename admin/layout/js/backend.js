@@ -69,7 +69,8 @@ $(function(){
 
         }
     });
-    // Show Delete Button On Child Cats
+   
+    	//  Delete Button 
 
 	$('.child-link').hover(function () {
 
@@ -80,6 +81,7 @@ $(function(){
 		$(this).find('.show-delete').fadeOut(400);
 
 	});
+
 
 });
 

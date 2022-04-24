@@ -75,7 +75,8 @@
                 </ul>
                 <ul class="navbar-nav mr-auto">
                     <?php
-                    foreach (getCat() as $cat) {
+                    $allCats = getAllFrom("*", "categories", "where parent = 0", "", "ID", "ASC");
+                    foreach ($allCats as $cat) {
                         // echo $cat['ID'];
                         echo "<li class='nav-item '> <a class='nav-link'  href='categories.php?pageid=" . $cat['ID'] . '&pagename=' . str_replace(' ', '-', $cat['Name']) . "' >" . $cat['Name'] . "</a> </li>";
                     }

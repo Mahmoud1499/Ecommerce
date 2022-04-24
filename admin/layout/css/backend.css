@@ -86,7 +86,13 @@ body {
 .form-control {
   position: relative;
 }
+@media (min-width: 576px){
+  .col-sm-2 {
+    
+    max-width: 32.666667%;
+  }
 
+}
 /* end bootstrap */
 /*  start dashoabrd  */
 .home-stats .stat {
@@ -339,7 +345,44 @@ h1 {
   margin-top: 15px;
   margin-bottom: 30px;
 }
+
+.categories .child-head {
+  margin: 15px 10px 10px;
+  font-weight: bold;
+  font-size: 16px;
+  color: #22ab79;
+}
+
+.categories .child-cats {
+margin: 0;
+}
+
+.categories .child-cats li {
+margin-left: 15px;
+}
+
+.categories .child-cats li:before {
+content: "- ";
+}
+
+.categories .show-delete {
+color: #F00;
+display: none;
+}
 /* end category   */ ;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* kamona */
 
