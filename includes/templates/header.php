@@ -32,38 +32,6 @@
 </head>
 
 <body>
-    <div class="Upper-bar">
-        <div class="container">
-            <?php
-            // var_dump($_SESSION['user']);
-            // var_dump($_GET);
-            if (isset($_SESSION['user'])) { ?>
-
-                <img class="my-image img-fluid  rounded-circle  " src='https://th.bing.com/th/id/OIP.2RR4RuG1NyW5PsfzQN_sKgHaE8?pid=ImgDet&rs=1' alt="" />
-                <div class="btn-group my-info">
-                    <span class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                        <?php echo $_SESSION['user'] ?>
-                        <span class="caret"></span>
-                    </span>
-                    <ul class="dropdown-menu">
-                        <li><a href="profile.php">My Profile</a></li>
-                        <li><a href="newad.php">New Item</a></li>
-                        <li><a href="profile.php#my-ads">My Items</a></li>
-                        <li><a href="logout.php">Logout</a></li>
-                    </ul>
-                </div>
-
-            <?php
-
-            } else {
-            ?>
-                <a href="login.php">
-                    <span class="pull-right">Login/Signup</span>
-                </a>
-            <?php } ?>
-        </div>
-    </div>
-
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">

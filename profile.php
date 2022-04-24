@@ -24,6 +24,7 @@ if (isset($_SESSION['user'])) {
                         <li> <i class="fa fa-calendar fa-fw"></i> <span> Registerd Date: </span> <?= $info['UserName']; ?> </li>
                         <li> <i class="fa fa-tags fa-fw"></i> <span> Favorite Categories: </span> <?= $info['UserName']; ?> </li>
                     </ul>
+                    <a href="#" class="btn btn-default">Edit My Information </a>
                 </div>
             </div>
         </div>

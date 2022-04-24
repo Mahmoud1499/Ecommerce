@@ -203,6 +203,9 @@ background-color:#eee ;
   color: #aaa;
   font-weight: bold;
 }
+.information .btn{
+  margin-top: 10px;
+}
 
 /* end profile */
 /* Start  Item Page */
