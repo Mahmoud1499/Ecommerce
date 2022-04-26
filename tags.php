@@ -1,17 +1,17 @@
 <?php
 session_start();
-include "init.php";
+include 'init.php';
 ?>
 
 <div class="container">
-    <h1 class="text-center"> <?= str_replace('-', ' ', $_GET['pagename']) ?> </h1>
+    <h1 class="text-center"> <?= $_GET['name']  ?> </h1>
     <div class="row">
         <?php
+        if (isset($_GET['name'])) {
+            $tag = $_GET['name'];
 
-        if (isset($_GET['pageid']) && is_numeric($_GET['pageid'])) {
-            $category = intval($_GET['pageid']);
-            $allItems = getAllFrom("*", "items", "where Cat_ID = {$category}", "AND Approve = 1", "Item_ID");
-            foreach ($allItems as $item) {
+            $tagItems = getAllFrom("*", "items", "where tags like '%$tag%'", "AND Approve = 1", "Item_ID");
+            foreach ($tagItems as $item) {
                 echo "<div class='col-sm-6 col-md-4'>";
                 echo "<div class='img-thumbnail item-box'>";
                 echo "<span class='price-tag'> " . $item['Price'] . "</span>";
@@ -26,17 +26,10 @@ include "init.php";
                 echo "</div>";
             }
         } else {
-            echo 'You Must Add Page ID';
+            echo 'You Must Enter Tag Name';
         }
-
         ?>
-
     </div>
 </div>
 
-
-
-<?php
-
-
-include $tpl . "footer.php";
+<?php include $tpl . 'footer.php'; ?>

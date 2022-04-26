@@ -47,8 +47,8 @@ if (isset($_SESSION['user'])) {
         if (empty($formErrors)) {
             // Insert Userinfo In Database
             $stmt = $con->prepare("INSERT INTO 
-                items(Name, Description, Price, Country_Made, Status, Add_Date, Cat_ID, Member_ID)
-                VALUES(:zname, :zdesc, :zprice, :zcountry, :zstatus, now(), :zcat, :zmember)");
+                items(Name, Description, Price, Country_Made, Status, Add_Date, Cat_ID, Member_ID,tags)
+                VALUES(:zname, :zdesc, :zprice, :zcountry, :zstatus, now(), :zcat, :zmember, :ztags)");
 
             $stmt->execute(array(
 
@@ -59,6 +59,7 @@ if (isset($_SESSION['user'])) {
                 'zstatus'     => $status,
                 'zcat'        => $category,
                 'zmember'    => $_SESSION['uid'],
+                'ztags'      => $tags
 
             ));
 

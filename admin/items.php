@@ -126,11 +126,9 @@ if (isset($_SESSION['username'])) {
                             <select class="" name="member" id="" required=" required">
                                 <option value="0">...</option>
                                 <?php
-                                $stmt = $con->prepare("Select * from users ");
-                                $stmt->execute();
-                                $users = $stmt->fetchAll();
-                                foreach ($users as $user) {
-                                    echo "<option value='" . $user['UserID'] . "' >" . $user['UserName'] . " </option>";
+                                $allMembers = getAllFrom("*", "users", "", "", "UserID");
+                                foreach ($allMembers as $user) {
+                                    echo "<option value='" . $user['UserID'] . "'>" . $user['UserName'] . "</option>";
                                 }
                                 ?>
                             </select>
@@ -142,17 +140,24 @@ if (isset($_SESSION['username'])) {
                                 <select class="" name="category" id="" required="required">
                                     <option value="0">...</option>
                                     <?php
-                                    $stmt = $con->prepare("Select * from categories ");
-                                    $stmt->execute();
-                                    $categories = $stmt->fetchAll();
-                                    foreach ($categories as $category) {
-                                        echo "<option value='" . $category['ID'] . "' >" . $category['Name'] . " </option>";
+                                    $allCats = getAllFrom("*", "categories", "where parent = 0", "", "ID");
+                                    foreach ($allCats as $cat) {
+                                        echo "<option value='" . $cat['ID'] . "'>" . $cat['Name'] . "</option>";
+                                        $childCats = getAllFrom("*", "categories", "where parent = {$cat['ID']}", "", "ID");
+                                        foreach ($childCats as $child) {
+                                            echo "<option value='" . $child['ID'] . "'>--- " . $child['Name'] . "</option>";
+                                        }
                                     }
                                     ?>
                                 </select>
                             </div>
 
-
+                            <div class="form-group form-group-lg">
+                                <label class="col-sm-2 control-label">Tags</label>
+                                <div class="col-sm-10 col-md-6">
+                                    <input type="text" name="tags" class="form-control" placeholder="Separate Tags With Comma (,)" />
+                                </div>
+                            </div>
 
                             <div class="form-group form-group-lg mt-3">
                                 <div class=" col-sm-offset-2 col-sm-10">
@@ -179,6 +184,7 @@ if (isset($_SESSION['username'])) {
             $status = $_POST['status'];
             $member = $_POST['member'];
             $category = $_POST['category'];
+            $tags = $_POST['tags'];
 
 
             $formErrors = array();
@@ -213,9 +219,10 @@ if (isset($_SESSION['username'])) {
             if (empty($formErrors)) {
                 //check
 
-                $stmt = $con->prepare("INSERT INTO Items(Name, Description, Price, Country_Made , Status ,Member_ID  ,Cat_ID  ,Add_Date) VALUES(?,?,?,?,?,?,?,now()) ");
+                $stmt = $con->prepare("INSERT INTO Items(Name, Description, Price, Country_Made , Status ,Member_ID  ,Cat_ID  ,Add_Date , tags) 
+                VALUES(?,?,?,?,?,?,?,now(),?) ");
 
-                $stmt->execute(array($name, $desc, $price, $country, $status, $member, $category));
+                $stmt->execute(array($name, $desc, $price, $country, $status, $member, $category, $tags));
 
                 $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . '  ONE RECOED INSERTED </div>';
 
@@ -325,20 +332,32 @@ if (isset($_SESSION['username'])) {
                                     <select class="" name="category" id="" required="required">
 
                                         <?php
-                                        $stmt = $con->prepare("Select * from categories ");
-                                        $stmt->execute();
-                                        $categories = $stmt->fetchAll();
-                                        foreach ($categories as $category) {
-                                            echo "<option value='" . $category['ID'] . "' ";
-                                            if ($item['Cat_ID'] ==  $category['ID']) {
-                                                echo 'selected';
+                                        $allCats = getAllFrom("*", "categories", "where parent = 0", "", "ID");
+                                        foreach ($allCats as $cat) {
+                                            echo "<option value='" . $cat['ID'] . "'";
+                                            if ($item['Cat_ID'] == $cat['ID']) {
+                                                echo ' selected';
                                             }
-                                            echo ">" . $category['Name'] . " </option>";
+                                            echo ">" . $cat['Name'] . "</option>";
+                                            $childCats = getAllFrom("*", "categories", "where parent = {$cat['ID']}", "", "ID");
+                                            foreach ($childCats as $child) {
+                                                echo "<option value='" . $child['ID'] . "'";
+                                                if ($item['Cat_ID'] == $child['ID']) {
+                                                    echo ' selected';
+                                                }
+                                                echo ">--- " . $child['Name'] . "</option>";
+                                            }
                                         }
                                         ?>
                                     </select>
                                 </div>
 
+                                <div class="form-group form-group-lg">
+                                    <label class="col-sm-2 control-label">Tags</label>
+                                    <div class="col-sm-10 col-md-6">
+                                        <input type="text" name="tags" class="form-control" placeholder="Separate Tags With Comma (,)" value="<?php echo $item['tags'] ?>" />
+                                    </div>
+                                </div>
 
 
                                 <div class="form-group form-group-lg mt-3">
@@ -422,6 +441,7 @@ if (isset($_SESSION['username'])) {
             $status = $_POST['status'];
             $category = $_POST['category'];
             $member = $_POST['member'];
+            $tags = $_POST['tags'];
 
             $formErrors = array();
 
@@ -453,9 +473,9 @@ if (isset($_SESSION['username'])) {
             }
             // no error
             if (empty($formErrors)) {
-                $stmt = $con->prepare("UPDATE items SET Name = ?, Description= ?, Price= ?,Country_Made= ? , Status=?, Cat_ID =?, Member_ID=?  WHERE Item_ID= ? ");
+                $stmt = $con->prepare("UPDATE items SET Name = ?, Description= ?, Price= ?,Country_Made= ? , Status=?, Cat_ID =?, Member_ID=?, tags = ? WHERE Item_ID= ? ");
 
-                $stmt->execute(array($name, $desc, $price, $country, $status, $category, $member, $id));
+                $stmt->execute(array($name, $desc, $price, $country, $status, $category, $member, $tags, $id));
 
                 $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' RECOED UPDATED </div>';
 
