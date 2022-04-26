@@ -33,9 +33,11 @@ if (isset($_SESSION['username'])) {
             <h1 class="text-center">Mange Members</h1>
             <div class="container">
                 <div class="table-responsive">
-                    <table class="main-table text-center table table-bordered">
+                    <table class="main-table manage-members text-center table table-bordered ">
                         <tr>
                             <td>#ID</td>
+                            <td>User Photo</td>
+
                             <td>Username</td>
                             <td>Email</td>
                             <td>Full Name</td>
@@ -46,6 +48,14 @@ if (isset($_SESSION['username'])) {
                         foreach ($rows as $row) {
                             echo "<tr>";
                             echo "<td>" . $row['UserID'] . "</td>";
+                            echo "<td>";
+                            if (empty($row['avatar'])) {
+                                echo "<img src='uploads/avatars/" . $row['avatar'] . "' alt ='No photo' />";
+                            } else {
+                                echo "<img src='uploads/avatars/" . $row['avatar'] . "' alt ='user photo' />";
+                            }
+                            echo "</td>";
+
                             echo "<td>" . $row['UserName'] . "</td>";
                             echo "<td>" . $row['Email'] . "</td>";
                             echo "<td>" . $row['FullName'] . "</td>";
@@ -86,7 +96,7 @@ if (isset($_SESSION['username'])) {
         <h1 class="text-center">Add Member</h1>
 
         <div class="container">
-            <form class="form-horizontal" action="?do=Insert" method="POST">
+            <form class="form-horizontal" action="?do=Insert" method="POST" enctype="multipart/form-data">
                 <div class="form-group form-group-lg"">
         <label class=" col-sm-2 col-md-6 control-label" for="Username"> Username </label>
                     <div class="col-sm-10">
@@ -116,6 +126,13 @@ if (isset($_SESSION['username'])) {
                     </div>
                 </div>
 
+                <div class="form-group form-group-lg"">
+                    <label class=" col-sm-2 col-md-6 control-label" for="Fullname"> User photo </label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="file" name="avatar" required="required">
+                    </div>
+                </div>
+
                 <div class="form-group form-group-lg">
                     <div class=" col-sm-offset-2 col-sm-10">
                         <input class="btn btn-primary btn-lg " type="submit" value="Add Member">
@@ -132,6 +149,27 @@ if (isset($_SESSION['username'])) {
             // var_dump($_POST);
             echo   '<h1 class="text-center">Add New Member</h1> ';
             echo   '<div class="container">';
+
+            $avatar = $_FILES['avatar'];
+
+            $avatarName = $_FILES['avatar']['name'];
+            $avatarSize = $_FILES['avatar']['size'];
+            $avatarTmp = $_FILES['avatar']['tmp_name'];
+            $avatarType = $_FILES['avatar']['type'];
+
+            $avatarAllowedExtension = array("png", "jpg", "jpeg", "gif");
+
+            $avatarExtensions = explode(".", $avatarName);
+            $avatarExtension = strtolower(end($avatarExtensions));
+
+            if (in_array($avatarExtension, $avatarAllowedExtension)) {
+            } else {
+            }
+
+
+
+
+
 
 
             $username = $_POST['Username'];
@@ -163,6 +201,15 @@ if (isset($_SESSION['username'])) {
             if (empty($pass)) {
                 $formErrors[] =  ' password cant be <strong> Empty  </strong> ';
             }
+            if (!empty($avatarName) && !in_array($avatarExtension, $avatarAllowedExtension)) {
+                $formErrors[] = 'This Extention is <strong> Not Allowed  </strong>';
+            }
+            if (empty($avatarName)) {
+                $formErrors[] = 'Please add a <strong> Photo  </strong>';
+            }
+            if ($avatarSize > (1024 * 4 * 1024)) {
+                $formErrors[] = 'Photo cant be larger than <strong> 4MB </strong>';
+            }
 
             foreach ($formErrors as $error) {
                 echo '<div class="alert alert-danger"> ' . $error . '</div>';
@@ -170,6 +217,8 @@ if (isset($_SESSION['username'])) {
             // no error
             if (empty($formErrors)) {
                 //check
+                $avatar = rand(0, 100000) . '_' . $avatarName;
+                move_uploaded_file($avatarTmp, "uploads\avatars\\" . $avatar);
 
                 $check = checkItem("Username", "users", "$username");
                 if ($check == 1) {
@@ -177,9 +226,9 @@ if (isset($_SESSION['username'])) {
                     redirectHome($theMsg, 'back');
                 } else {
 
-                    $stmt = $con->prepare("INSERT INTO users(Username, Password, Email, FullName , RegStatus, Date) VALUES(?,?,?,?,1,now()) ");
+                    $stmt = $con->prepare("INSERT INTO users(Username, Password, Email, FullName , RegStatus, Date , avatar) VALUES(?,?,?,?,1,now(),?) ");
 
-                    $stmt->execute(array($username, $hashPass, $email, $name));
+                    $stmt->execute(array($username, $hashPass, $email, $name, $avatar));
 
                     $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . '  ONE RECOED INSERTED </div>';
 
@@ -241,6 +290,13 @@ if (isset($_SESSION['username'])) {
                     <label class=" col-sm-2 col-md-6 control-label" for="Email"> Email </label>
                         <div class="col-sm-10">
                             <input class="form-control" type="email" name="Email" value="<?= $row['Email'] ?> " required="required">
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-lg"">
+                    <label class=" col-sm-2 col-md-6 control-label" for="Fullname"> User photo </label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="file" name="avatar" value="<?= $row['FullName'] ?>" required="required">
                         </div>
                     </div>
 
